@@ -19,10 +19,10 @@ node ("Dockerhost") {
 }
 
 stage ('PMD/Checkstyle')
-//node ("Dockerhost") {
+node ("Dockerhost") {
     step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher', pattern: '**/target/checkstyle-result.xml', unstableTotalAll:'320'])
     step([$class: 'PmdPublisher', pattern: '**/target/pmd.xml', unstableTotalAll:'0'])
-//}
+}
     
 stage ('Deploy')
 node ("Dockerhost") {
