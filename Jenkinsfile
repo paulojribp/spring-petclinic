@@ -22,6 +22,7 @@ stage ('PMD/Checkstyle')
 node ("Dockerhost") {
     step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher', pattern: '**/target/checkstyle-result.xml', unstableTotalAll:'320'])
     step([$class: 'PmdPublisher', pattern: '**/target/pmd.xml', unstableTotalAll:'0'])
+    jacoco changeBuildStatus: true, classPattern: '**/target/classes', execPattern: '**/target/**.exec', maximumClassCoverage: '50', maximumMethodCoverage: '50', minimumClassCoverage: '10', minimumMethodCoverage: '20'
 }
     
 stage ('Deploy')
