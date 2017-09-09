@@ -28,7 +28,7 @@ stage ('Deploy')
 node ("Dockerhost") {
     def pom = readMavenPom file: 'pom.xml'
     archive "target/${pom.artifactId}-${pom.version}.jar"
-    
+    sh "docker kill ${JOB_NAME}"
     sh "docker run --rm -it -d --name ${JOB_NAME} --link mysql:mysql_db -p 8088:8088 -p 8778:8778 -v \$(pwd)/target:/app -e JAVA_APP_JAR=/app/${pom.artifactId}-${pom.version}.jar -e MYSQL_SERVER=mysql_db fabric8/java-alpine-openjdk8-jdk"
 }
 
