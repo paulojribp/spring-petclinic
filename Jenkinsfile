@@ -11,7 +11,7 @@ stage ('Checkout') {
 
 stage ('Build') {
     node ("Dockerhost") {
-        sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore clean package pmd:pmd checkstyle:checkstyle"
+        sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore clean package pmd:pmd checkstyle:checkstyle cobertura:cobertura"
     }
 }
 
