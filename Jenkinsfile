@@ -32,8 +32,8 @@ stage ('Deploy') {
 
     def mensagem
     timeout(time:30, unit:'MINUTES') {
-        mensagem = input(message: 'Porque Deployar?',
-            parameters: [[$class: 'TextParameterDefinition', description: 'Porque Deployar?']])
+        mensagem = input(message: 'Seguir para Produção?',
+            parameters: [[$class: 'TextParameterDefinition', description: '', name: 'Mensagem']]
     }
 
     node ("Dockerhost") {
