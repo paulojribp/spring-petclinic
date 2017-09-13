@@ -29,11 +29,16 @@ stage ('Code Analysis') {
     }
 }
 stage ('Deploy') {
+
+    def mensagem
     timeout(time:30, unit:'MINUTES') {
-        input 'Deseja realmente seguir com o Deploy?'
+        mensagem = input message: 'Porque Deployar?',
+            parameters: [$class: 'TextParameterDefinition', description: 'Porque Deployar?']
     }
-    
+
     node ("Dockerhost") {
+        print "Motivo do deploy: ${mensagem}"
+
         //pipeline utility steps
         def pom = readMavenPom file: 'pom.xml'
         try {
