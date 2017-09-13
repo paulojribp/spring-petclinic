@@ -29,10 +29,11 @@ stage ('Code Analysis') {
     }
 }
 stage ('Deploy') {
-    node ("Dockerhost") {
+    timeout(time:30, unit:'MINUTES') {
         input 'Deseja realmente seguir com o Deploy?'
-
-        
+    }
+    
+    node ("Dockerhost") {
         //pipeline utility steps
         def pom = readMavenPom file: 'pom.xml'
         try {
