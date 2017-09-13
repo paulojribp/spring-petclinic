@@ -8,12 +8,16 @@ stage ('Checkout') {
 stage ('Build') {
     node ("Dockerhost") {
         def mvnHome = tool 'M3'
-        sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean package pmd:pmd checkstyle:checkstyle"
+        sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean package pmd:pmd checkstyle:checkstyle cobertura:cobertura"
     }
 }
 stage ('Tests') {
     node ("Dockerhost") {
         junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml', keepLongStdio: true
+        step([$class: 'CoberturaPublisher',
+            coberturaReportFile: '**/target/site/cobertura/coverage.xml',
+            failUnhealthy: false, maxNumberOfBuild: 0,
+            onlyStable: false, failUnstable: false])
     }
 }
 stage ('Code Analysis') {
