@@ -30,6 +30,9 @@ stage ('Code Analysis') {
 }
 stage ('Deploy') {
     node ("Dockerhost") {
+        input 'Deseja realmente seguir com o Deploy?'
+
+        
         //pipeline utility steps
         def pom = readMavenPom file: 'pom.xml'
         try {
