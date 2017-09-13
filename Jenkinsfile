@@ -34,7 +34,7 @@ stage ('Deploy') {
             print ">>>>>> Container não estava rodando! <<<<<<<<"
         }
 
-        sh "docker run --rm -d -p 8088:8088 --name ${JOB_NAME} -v \$(pwd)/target:/app -e JAVA_APP_JAR=/app/${pom.artifactId}-${pom.version}.jar fabric8/java-alpine-openjdk8-jdk"
+        sh "docker run --rm -d -p 8088:8088 --name ${JOB_NAME} -v \$(pwd)/target:/app -e JAVA_APP_JAR=/app/${pom.artifactId}-${pom.version}.jar --link mysql:mysql_server -e JAVA_OPTIONS=\"-Dspring.datasource.host=mysql_server -Dspring.profiles.active=mysql\" fabric8/java-alpine-openjdk8-jdk"
     }
 }
 
