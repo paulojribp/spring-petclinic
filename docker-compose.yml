@@ -1,9 +1,44 @@
-mysql:
-  image: mysql
-  ports:
-    - "3306:3306"
-  environment:
-    - MYSQL_ROOT_PASSWORD=root
-    - MYSQL_DATABASE=test
-  volumes:
-    - "./conf.d:/etc/mysql/conf.d:ro"
+version: "3"
+
+services:
+  mysql:
+    image: mysql:5.7.8
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=petclinic
+      - MYSQL_DATABASE=petclinic
+    volumes:
+      - "../docker-volumes/mysql:/etc/mysql/conf.d"
+    container_name: mysql
+    networks:
+      - petclinic
+
+  petclinic:
+    image: fabric8/java-alpine-openjdk8-jdk
+    ports:
+      - "8088:8088"
+    environment:
+      - JAVA_APP_JAR=/app/spring-petclinic-1.5.1.jar
+      - spring.datasource.host=mysql
+      - spring.profiles.active=mysql
+    volumes:
+      - "./target:/app"
+    container_name: PetClinic
+    networks:
+      - petclinic
+    depends_on:
+      - mysql
+
+networks:
+  petclinic:
+    driver: bridge
+
+
+
+
+
+
+
+
+
