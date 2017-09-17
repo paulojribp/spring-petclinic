@@ -46,7 +46,7 @@ stage ('Deploy') {
         archive "target/${pom.artifactId}-${pom.version}.jar"
         
         sh "docker-compose down"
-        sh "docker-compose up"
+        sh "docker-compose up -d"
     }
 }
 
